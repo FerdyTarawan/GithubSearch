@@ -14,7 +14,7 @@ android {
         targetSdk 30
         versionCode 1
         versionName "1.0"
-
+        buildConfigField "String", "ACCESS_TOKEN", "\"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\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
