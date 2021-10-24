@@ -51,7 +51,7 @@ fun ProfileItem(user: User) {
             }
 
             Row {
-                Text(text = user.location)
+                user.location?.let { Text(text = it) }
                 Spacer(Modifier.width(16.dp))
                 user.email?.let { Text(text = it) }
             }

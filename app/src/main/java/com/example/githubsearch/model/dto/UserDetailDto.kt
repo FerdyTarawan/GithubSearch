@@ -61,16 +61,16 @@ data class UserDetailDto (
     val siteAdmin: Boolean,
 
     @Json(name = "name")
-    val name: String,
+    val name: String? = null,
 
     @Json(name = "company")
-    val company: String,
+    val company: String? = null,
 
     @Json(name = "blog")
     val blog: String,
 
     @Json(name = "location")
-    val location: String,
+    val location: String? = null,
 
     @Json(name = "email")
     val email: String? = null,
@@ -107,7 +107,7 @@ fun UserDetailDto.toDomain(): User {
     return User(
         login = login,
         avatarURL = avatarURL,
-        name = name,
+        name = name ?: login,
         location = location,
         following = following.toString(),
         followers = followers.toString(),

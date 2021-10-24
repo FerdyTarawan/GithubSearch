@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -16,6 +17,6 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideGithubRepository(githubService: GithubService): GithubRepository {
-        return GithubRepositoryImpl(githubService = githubService)
+        return GithubRepositoryImpl(githubService = githubService, defaultDispatcher = Dispatchers.IO)
     }
 }

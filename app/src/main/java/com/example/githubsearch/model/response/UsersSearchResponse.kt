@@ -13,5 +13,5 @@ data class UsersSearchResponse (
     val incompleteResults: Boolean,
 
     @Json(name = "items")
-    val items: UserDto
+    val items: List<UserDto>
 )
