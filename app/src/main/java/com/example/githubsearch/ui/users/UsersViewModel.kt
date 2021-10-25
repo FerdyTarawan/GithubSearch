@@ -36,7 +36,7 @@ class UsersViewModel @Inject constructor(
         }.flatMapLatest { (page, query) ->
             _usersLoadingState.value = NetworkState.LOADING
             githubRepository.searchUsers(
-                params = if (query.isBlank()) "\"\"" else query,
+                params = if (query.isBlank()) "type:user" else "type:user $query in:name $query in:login",
                 page = page,
                 onSuccess = { _usersLoadingState.value = NetworkState.SUCCESS },
                 onError = { _usersLoadingState.value = NetworkState.ERROR }

@@ -37,7 +37,7 @@ class GithubRepositoryImpl(
         }.onError {
             onError?.invoke()
         }
-    }.onCompletion { onSuccess?.invoke() }.flowOn(Dispatchers.IO)
+    }.onCompletion { onSuccess?.invoke() }.flowOn(defaultDispatcher)
 
     override suspend fun getUser(
         username: String,
@@ -53,5 +53,5 @@ class GithubRepositoryImpl(
         }.onError {
             onError?.invoke()
         }
-    }.onCompletion { onSuccess?.invoke() }.flowOn(Dispatchers.IO)
+    }.onCompletion { onSuccess?.invoke() }.flowOn(defaultDispatcher)
 }

@@ -1,6 +1,5 @@
 package com.example.githubsearch.model
 
-
 data class User(
     val login: String,
     val avatarURL: String,
