@@ -44,17 +44,12 @@ class UserRepositoriesViewModel @Inject constructor(
                 onError = { _repoLoadingState.value = NetworkState.ERROR })
         }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            newRepoFlow.collectLatest {
-                repo.value.addAll(it)
-            }
-        }
-    }
-
     fun getUserData(username: String) {
         viewModelScope.launch(Dispatchers.IO) {
             githubRepository.getUser(username).collect { userDataFlow.value = it }
+            newRepoFlow.collectLatest {
+                repo.value.addAll(it)
+            }
         }
     }
 
