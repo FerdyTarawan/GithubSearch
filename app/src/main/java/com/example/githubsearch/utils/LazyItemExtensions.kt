@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 inline fun <T> LazyListScope.paging(
     items: List<T>,
     currentIndexFlow: StateFlow<Int>,
-    threshold: Int = 4,
+    threshold: Int = 5,
     pageSize: Int = 20,
     crossinline fetch: () -> Unit,
     crossinline itemContent: @Composable LazyItemScope.(item: T) -> Unit,
@@ -18,7 +18,7 @@ inline fun <T> LazyListScope.paging(
 
         itemContent(item)
 
-        if ((index + threshold + 1) >= pageSize * (currentIndexFlow.value - 1)) {
+        if ((index + threshold) >= pageSize * (currentIndexFlow.value - 1)) {
             fetch()
         }
     }

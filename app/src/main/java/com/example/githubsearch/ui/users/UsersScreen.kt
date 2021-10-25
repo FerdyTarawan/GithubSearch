@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.githubsearch.network.NetworkState
 import com.example.githubsearch.ui.composables.ListDivider
 import com.example.githubsearch.ui.composables.Loading
@@ -22,27 +23,25 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @Composable
-fun UsersScreen(vm: UsersViewModel = viewModel()) {
+fun UsersScreen(navController: NavController, vm: UsersViewModel = viewModel()) {
     val networkState by vm.usersLoadingState
     val users by vm.users
 
-    Scaffold {
+    Column(Modifier.fillMaxSize()) {
         Card(Modifier.padding(15.dp)) {
-            Column(Modifier.padding(10.dp)) {
-                LazyColumn(state = rememberLazyListState()) {
-                    paging(
-                        items = users,
-                        currentIndexFlow = vm.usersPageStateFlow,
-                        fetch = { vm.loadNextUsersPage() }
-                    ) {
-                        ProfileItem(user = it)
-                        ListDivider()
-                    }
+            LazyColumn(state = rememberLazyListState()) {
+                paging(
+                    items = users,
+                    currentIndexFlow = vm.usersPageStateFlow,
+                    fetch = { vm.loadNextUsersPage() }
+                ) {
+                    ProfileItem(user = it)
+                    ListDivider()
                 }
+            }
 
-                if (networkState == NetworkState.LOADING) {
-                    Loading()
-                }
+            if (networkState == NetworkState.LOADING) {
+                Loading()
             }
         }
     }
