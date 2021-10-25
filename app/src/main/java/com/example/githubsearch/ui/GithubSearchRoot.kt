@@ -10,7 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.githubsearch.ui.repositories.RepositoryScreen
+import com.example.githubsearch.ui.repositories.UserRepositoriesScreen
+import com.example.githubsearch.ui.repositories.UserRepositoriesViewModel
 import com.example.githubsearch.ui.theme.GithubSearchTheme
 import com.example.githubsearch.ui.users.UsersScreen
 import com.example.githubsearch.ui.users.UsersViewModel
@@ -28,16 +29,17 @@ fun GithubSearchRoot() {
                 startDestination = "user_search",
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable("user_search") {
+                composable(route = "user_search") {
                     val viewModel = hiltViewModel<UsersViewModel>()
                     UsersScreen(navController, viewModel)
                 }
                 composable(
-                    "user_repository/{username}",
+                    route = "user_repository/{username}",
                     arguments = listOf(navArgument("username") { type = NavType.StringType })
                 ) { entry ->
                     val username = entry.arguments!!.getString("username")
-                    RepositoryScreen(username = username!!)
+                    val viewModel = hiltViewModel<UserRepositoriesViewModel>()
+                    UserRepositoriesScreen(username = username!!, viewModel)
                 }
             }
         }

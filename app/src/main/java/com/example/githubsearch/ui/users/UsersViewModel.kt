@@ -11,11 +11,13 @@ import com.example.githubsearch.repository.GithubRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
+@FlowPreview
 @HiltViewModel
 class UsersViewModel @Inject constructor(
     private val githubRepository: GithubRepository
@@ -33,7 +35,7 @@ class UsersViewModel @Inject constructor(
                 page,
                 query
             )
-        }.flatMapLatest { (page, query) ->
+        }.debounce(300).flatMapLatest { (page, query) ->
             _usersLoadingState.value = NetworkState.LOADING
             githubRepository.searchUsers(
                 params = if (query.isBlank()) "type:user" else "type:user $query in:name $query in:login",
@@ -59,6 +61,7 @@ class UsersViewModel @Inject constructor(
 
     fun updateSearchQuery(text: String) {
         searchQueryStateFlow.value = text
+        usersPageStateFlow.value = 1
         users.value.clear()
     }
 }
