@@ -1,6 +1,7 @@
 package com.example.githubsearch.ui.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
@@ -27,13 +28,20 @@ val DUMMY_USER: User = User(
 )
 
 @Composable
-fun ProfileItem(user: User) {
-    Row(modifier = Modifier.padding(5.dp)) {
+fun ProfileItem(user: User, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
                 painter = rememberImagePainter(data = user.avatarURL),
                 contentDescription = "User avatar",
-                modifier = Modifier.size(50.dp).clip(CircleShape),
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape),
             )
         }
 
@@ -62,5 +70,5 @@ fun ProfileItem(user: User) {
 @Preview(showBackground = true)
 @Composable
 fun ProfileItemPreview() {
-    ProfileItem(user = DUMMY_USER)
+    ProfileItem(user = DUMMY_USER) {}
 }

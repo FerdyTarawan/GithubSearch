@@ -35,7 +35,9 @@ fun UsersScreen(navController: NavController, vm: UsersViewModel = viewModel()) 
                     currentIndexFlow = vm.usersPageStateFlow,
                     fetch = { vm.loadNextUsersPage() }
                 ) {
-                    ProfileItem(user = it)
+                    ProfileItem(
+                        user = it,
+                    ) { navController.navigate("user_repository/${it.login}") }
                     ListDivider()
                 }
             }
