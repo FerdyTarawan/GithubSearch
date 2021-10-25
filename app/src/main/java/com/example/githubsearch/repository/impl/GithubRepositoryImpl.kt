@@ -4,15 +4,11 @@ import com.example.githubsearch.model.User
 import com.example.githubsearch.model.dto.toDomain
 import com.example.githubsearch.network.GithubService
 import com.example.githubsearch.repository.GithubRepository
-import com.skydoves.sandwich.getOrThrow
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.*
 
 class GithubRepositoryImpl(
     private val githubService: GithubService,
@@ -26,26 +22,36 @@ class GithubRepositoryImpl(
         perPage: Int?,
         onSuccess: (() -> Unit)?,
         onError: (() -> Unit)?
-    ) = flow<List<User>> {
+    ): Flow<List<User>> = flow {
         val response = githubService.searchUsers(params, page, sort, order, perPage)
         response.suspendOnSuccess {
             val usersDto = data.items
-            val users = usersDto.map { getUser(it.login) }
+            val users = mutableListOf<User>()
 
-            emit(users)
+            usersDto.asFlow().map { userDto ->
+                getUser(userDto.login).collect { users.add(it) }
+            }.collect()
+
+            emit(users.toList())
             onSuccess?.invoke()
         }.onError {
             onError?.invoke()
         }
     }.onCompletion { onSuccess?.invoke() }.flowOn(Dispatchers.IO)
 
-    override suspend fun getUser(username: String): User = withContext(defaultDispatcher) {
-        lateinit var data: User
-        try {
-            data = githubService.getUser(username).getOrThrow().toDomain()
-        } catch (e: Exception) {
-            e.printStackTrace()
+    override suspend fun getUser(
+        username: String,
+        onSuccess: (() -> Unit)?,
+        onError: (() -> Unit)?
+    ): Flow<User> = flow {
+        val response = githubService.getUser(username)
+
+        response.suspendOnSuccess {
+            val user = data.toDomain()
+            emit(user)
+            onSuccess?.invoke()
+        }.onError {
+            onError?.invoke()
         }
-        return@withContext data
-    }
+    }.onCompletion { onSuccess?.invoke() }.flowOn(Dispatchers.IO)
 }

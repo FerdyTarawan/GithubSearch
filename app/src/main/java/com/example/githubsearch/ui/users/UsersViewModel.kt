@@ -25,19 +25,26 @@ class UsersViewModel @Inject constructor(
 
     val users: State<MutableList<User>> = mutableStateOf(mutableListOf())
     val usersPageStateFlow: MutableStateFlow<Int> = MutableStateFlow(1)
+    val searchQueryStateFlow: MutableStateFlow<String> = MutableStateFlow("")
 
-    private val newUsersFlow = usersPageStateFlow.flatMapLatest {
-        _usersLoadingState.value = NetworkState.LOADING
-        githubRepository.searchUsers (
-            params = "\"\"",
-            page = it,
-            onSuccess = { _usersLoadingState.value = NetworkState.SUCCESS },
-            onError =  { _usersLoadingState.value = NetworkState.ERROR }
-        )
-    }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
+    private val newUsersFlow =
+        usersPageStateFlow.combine(searchQueryStateFlow) { page: Int, query: String ->
+            Pair(
+                page,
+                query
+            )
+        }.flatMapLatest { (page, query) ->
+            _usersLoadingState.value = NetworkState.LOADING
+            githubRepository.searchUsers(
+                params = if (query.isBlank()) "\"\"" else query,
+                page = page,
+                onSuccess = { _usersLoadingState.value = NetworkState.SUCCESS },
+                onError = { _usersLoadingState.value = NetworkState.ERROR }
+            )
+        }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 
     init {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             newUsersFlow.collectLatest {
                 users.value.addAll(it)
             }
@@ -48,5 +55,10 @@ class UsersViewModel @Inject constructor(
         if (usersLoadingState.value != NetworkState.LOADING) {
             usersPageStateFlow.value++
         }
+    }
+
+    fun updateSearchQuery(text: String) {
+        searchQueryStateFlow.value = text
+        users.value.clear()
     }
 }

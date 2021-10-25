@@ -14,5 +14,9 @@ interface GithubRepository {
         onError: (() -> Unit)? = null,
     ): Flow<List<User>>
 
-    suspend fun getUser(username: String): User
+    suspend fun getUser(
+        username: String,
+        onSuccess: (() -> Unit)? = null,
+        onError: (() -> Unit)? = null,
+    ): Flow<User>
 }
