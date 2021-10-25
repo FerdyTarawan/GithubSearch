@@ -22,7 +22,9 @@ import com.example.githubsearch.ui.composables.ProfileItem
 import com.example.githubsearch.ui.composables.SearchBar
 import com.example.githubsearch.utils.paging
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 @Composable
 fun UsersScreen(navController: NavController, vm: UsersViewModel = viewModel()) {
@@ -31,9 +33,7 @@ fun UsersScreen(navController: NavController, vm: UsersViewModel = viewModel()) 
     val searchQuery = vm.searchQueryStateFlow.collectAsState()
 
     Column(Modifier.fillMaxSize()) {
-        SearchBar(
-            value = searchQuery.value,
-            onValueChange = { newVal -> vm.updateSearchQuery(newVal) })
+        SearchBar(value = searchQuery.value) { newVal -> vm.updateSearchQuery(newVal) }
         Card(Modifier.padding(15.dp)) {
             LazyColumn(state = rememberLazyListState()) {
                 paging(
@@ -41,9 +41,9 @@ fun UsersScreen(navController: NavController, vm: UsersViewModel = viewModel()) 
                     currentIndexFlow = vm.usersPageStateFlow,
                     fetch = { vm.loadNextUsersPage() }
                 ) {
-                    ProfileItem(
-                        user = it,
-                    ) { navController.navigate("user_repository/${it.login}") }
+                    ProfileItem(user = it) {
+                        navController.navigate("user_repository/${it.login}")
+                    }
                     ListDivider()
                 }
             }

@@ -1,6 +1,7 @@
 package com.example.githubsearch.model.dto
 
 import com.example.githubsearch.model.User
+import com.example.githubsearch.utils.formatNumber
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -109,8 +110,8 @@ fun UserDetailDto.toDomain(): User {
         avatarURL = avatarURL,
         name = name ?: login,
         location = location,
-        following = following.toString(),
-        followers = followers.toString(),
+        following = formatNumber(following),
+        followers = formatNumber(followers),
         email = email,
         blog = blog,
         bio = bio,

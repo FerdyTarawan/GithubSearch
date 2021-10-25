@@ -16,7 +16,9 @@ import com.example.githubsearch.ui.theme.GithubSearchTheme
 import com.example.githubsearch.ui.users.UsersScreen
 import com.example.githubsearch.ui.users.UsersViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 @Composable
 fun GithubSearchRoot() {
@@ -33,6 +35,7 @@ fun GithubSearchRoot() {
                     val viewModel = hiltViewModel<UsersViewModel>()
                     UsersScreen(navController, viewModel)
                 }
+
                 composable(
                     route = "user_repository/{username}",
                     arguments = listOf(navArgument("username") { type = NavType.StringType })

@@ -58,7 +58,4 @@ data class UserDto (
 
     @Json(name = "site_admin")
     val siteAdmin: Boolean,
-
-    @Json(name = "score")
-    val score: Double
 )

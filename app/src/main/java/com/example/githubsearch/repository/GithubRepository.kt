@@ -1,5 +1,6 @@
 package com.example.githubsearch.repository
 
+import com.example.githubsearch.model.Repo
 import com.example.githubsearch.model.User
 import kotlinx.coroutines.flow.Flow
 
@@ -9,7 +10,7 @@ interface GithubRepository {
         page: Int? = null,
         sort: String? = null,
         order: String? = null,
-        perPage: Int? = 20,
+        perPage: Int? = 30,
         onSuccess: (() -> Unit)? = null,
         onError: (() -> Unit)? = null,
     ): Flow<List<User>>
@@ -19,4 +20,12 @@ interface GithubRepository {
         onSuccess: (() -> Unit)? = null,
         onError: (() -> Unit)? = null,
     ): Flow<User>
+
+    suspend fun getUserRepositories(
+        params: String,
+        page: Int? = null,
+        perPage: Int? = 30,
+        onSuccess: (() -> Unit)? = null,
+        onError: (() -> Unit)? = null,
+    ): Flow<List<Repo>>
 }
