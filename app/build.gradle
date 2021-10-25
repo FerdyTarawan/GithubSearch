@@ -5,6 +5,9 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(project.rootProject.file("local.properties")))
+
 android {
     compileSdk 31
 
@@ -14,7 +17,8 @@ android {
         targetSdk 30
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "ACCESS_TOKEN", "\"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\""
+        buildConfigField "String", "API_BASE_URL", "\"" + localProperties.getProperty("baseUrl") + "\""
+        buildConfigField "String", "ACCESS_TOKEN", "\"" + localProperties.getProperty("githubToken") + "\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true

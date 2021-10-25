@@ -2,6 +2,7 @@ package com.example.githubsearch.di
 
 import com.example.githubsearch.network.AuthInterceptor
 import com.example.githubsearch.network.GithubService
+import com.example.githubsearch.ui.BuildConfig
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -36,7 +37,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
-        return Retrofit.Builder().client(okHttpClient).baseUrl("https://api.github.com")
+        return Retrofit.Builder().client(okHttpClient).baseUrl(BuildConfig.API_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
             .build()
