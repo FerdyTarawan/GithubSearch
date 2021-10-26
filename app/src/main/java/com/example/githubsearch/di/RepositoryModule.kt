@@ -8,8 +8,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import javax.inject.Singleton
 
+@FlowPreview
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {

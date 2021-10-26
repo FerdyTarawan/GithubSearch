@@ -8,8 +8,10 @@ import com.example.githubsearch.repository.GithubRepository
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 
+@FlowPreview
 class GithubRepositoryImpl(
     private val githubService: GithubService,
     private val defaultDispatcher: CoroutineDispatcher
@@ -27,9 +29,10 @@ class GithubRepositoryImpl(
         response.suspendOnSuccess {
             val usersDto = data.items
             val users = mutableListOf<User>()
-            usersDto.asFlow().map { userDto ->
-                getUser(userDto.login).collect { users.add(it) }
-            }.collect()
+
+            usersDto.asFlow().flatMapConcat { userDto ->
+                getUser(userDto.login)
+            }.collect { users.add(it) }
 
             emit(users.toList())
             onSuccess?.invoke()
