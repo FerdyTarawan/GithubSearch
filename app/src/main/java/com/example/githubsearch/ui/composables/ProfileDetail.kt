@@ -36,7 +36,7 @@ fun ProfileDetail(user: User?, modifier: Modifier = Modifier) {
                     painter = rememberImagePainter(data = user?.avatarURL),
                     contentDescription = "User avatar",
                     modifier = Modifier
-                        .size(100.dp)
+                        .size(80.dp)
                         .clip(CircleShape)
                         .placeholder(visible = showPlaceholder),
                 )
