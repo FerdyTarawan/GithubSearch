@@ -10,9 +10,9 @@ enum class NetworkState {
 }
 
 @Composable
-fun NetworkState.onLoading(block: @Composable () -> Unit): NetworkState {
+fun NetworkState.onLoading(loadingStateUi: @Composable () -> Unit): NetworkState {
     if (this == NetworkState.LOADING) {
-        block()
+        loadingStateUi()
     }
     return this
 }

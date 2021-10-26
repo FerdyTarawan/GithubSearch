@@ -1,16 +1,15 @@
 package com.example.githubsearch.ui.repositories
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.githubsearch.network.NetworkState
-import com.example.githubsearch.ui.composables.ListDivider
-import com.example.githubsearch.ui.composables.Loading
+import com.example.githubsearch.network.onLoading
+import com.example.githubsearch.ui.composables.*
 import com.example.githubsearch.utils.paging
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -25,34 +24,36 @@ fun UserRepositoriesScreen(username: String, vm: UserRepositoriesViewModel = vie
         vm.getUserData(username)
     }
 
-    if (userData.value == null) {
-        Loading()
-    } else {
-        Column(Modifier.fillMaxSize()) {
-            Text(text = username)
-            Text(text = userData.value?.name ?: "")
-            Text(text = userData.value?.avatarURL ?: "")
-            Text(text = userData.value?.followers ?: "")
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(10.dp)) {
+        ProfileDetail(user = userData.value)
+        ListDivider()
+        LazyColumn(state = rememberLazyListState()) {
+            paging(
+                items = repo,
+                currentIndexFlow = vm.repoPageStateFlow,
+                fetch = { vm.loadNextRepoPage() }
+            ) {
+                RepoItem(repo = it)
+                ListDivider()
+            }
 
-            LazyColumn(state = rememberLazyListState()) {
-                paging(
-                    items = repo,
-                    currentIndexFlow = vm.repoPageStateFlow,
-                    fetch = { vm.loadNextRepoPage() }
-                ) {
-                    Column {
-                        Text(text = it.name)
-                        it.description?.let { it1 -> Text(text = it1) }
-                        Text(text = it.stargazersCount.toString())
-                        Text(text = it.updatedAt)
+            item {
+                networkState.onLoading {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Loading(Modifier.padding(10.dp))
                     }
-                    ListDivider()
                 }
             }
-
-            if (networkState == NetworkState.LOADING) {
-                Loading()
-            }
         }
-     }
+
+        if (repo.isEmpty() && networkState == NetworkState.SUCCESS) {
+            EmptyList(text = "No Repositories")
+        }
+    }
 }

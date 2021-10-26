@@ -171,6 +171,6 @@ fun RepoDto.toDomain(): Repo {
         description = description,
         ownerAvatarUrl = owner.avatarUrl,
         stargazersCount = stargazersCount,
-        updatedAt = formatDateToNow(updatedAt),
+        updatedAt = "Updated ${formatDateToNow(updatedAt)}",
     )
 }

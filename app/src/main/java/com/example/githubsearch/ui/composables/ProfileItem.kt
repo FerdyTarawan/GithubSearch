@@ -26,16 +26,22 @@ val DUMMY_USER: User = User(
     blog = "Testing Testing",
     company = "Test Company",
     email = "john@doe.com",
-    followers = "100K",
-    following = "150",
+    followers = "100K Followers",
+    following = "150 Following",
     location = "New York"
 )
 
 @Composable
-fun ProfileItem(user: User, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun ProfileItem(
+    user: User,
+    modifier: Modifier = Modifier,
+    imgModifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .clickable(onClick = onClick)
+            .then(modifier)
             .padding(10.dp)
     ) {
         Row(
@@ -50,7 +56,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier, onClick: () -> Unit) 
                     modifier = Modifier
                         .size(50.dp)
                         .clip(CircleShape)
-                        .then(modifier),
+                        .then(imgModifier),
                 )
             }
 
@@ -103,5 +109,5 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier, onClick: () -> Unit) 
 @Preview(showBackground = true)
 @Composable
 fun ProfileItemPreview() {
-    ProfileItem(user = DUMMY_USER, modifier = Modifier.placeholder(visible = true)) {}
+    ProfileItem(user = DUMMY_USER, imgModifier = Modifier.placeholder(visible = true)) {}
 }
