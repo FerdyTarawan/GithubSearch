@@ -18,17 +18,17 @@ import com.example.githubsearch.model.User
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.placeholder.material.placeholder
 
-private val DUMMY_USER: User = User(
-    login = "jamesgolick",
-    name = "James Golick",
+val DUMMY_USER: User = User(
+    login = "johndoe",
+    name = "John Doe",
     avatarURL = "https://avatars.githubusercontent.com/u/37?v=4",
     bio = "Test User",
-    blog = "",
-    company = "Normal",
-    email = "wangshi@mihoyo.com",
-    followers = "0",
-    following = "0",
-    location = "New York New York"
+    blog = "Testing Testing",
+    company = "Test Company",
+    email = "john@doe.com",
+    followers = "100K",
+    following = "150",
+    location = "New York"
 )
 
 @Composable

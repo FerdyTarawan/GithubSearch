@@ -8,14 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.getValue
+import com.example.githubsearch.ui.composables.EmptyList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.githubsearch.network.NetworkState
-import com.example.githubsearch.ui.composables.ListDivider
-import com.example.githubsearch.ui.composables.Loading
-import com.example.githubsearch.ui.composables.ProfileItem
-import com.example.githubsearch.ui.composables.SearchBar
+import com.example.githubsearch.network.onLoading
+import com.example.githubsearch.ui.composables.*
 import com.example.githubsearch.utils.paging
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -55,15 +54,21 @@ fun UsersScreen(navController: NavController, vm: UsersViewModel = viewModel()) 
                         }
                         ListDivider()
                     }
+
+                    item {
+                        networkState.onLoading {
+                            Row (
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Loading(Modifier.padding(10.dp))
+                            }
+                        }
+                    }
                 }
 
-                if (networkState == NetworkState.LOADING) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Loading(Modifier.padding(10.dp))
-                    }
+                if (users.isEmpty() && networkState == NetworkState.SUCCESS){
+                    EmptyList(text = "Not Found")
                 }
             }
         }
