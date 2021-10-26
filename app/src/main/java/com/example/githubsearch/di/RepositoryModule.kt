@@ -1,5 +1,6 @@
 package com.example.githubsearch.di
 
+import com.example.githubsearch.db.dao.UserDao
 import com.example.githubsearch.network.GithubService
 import com.example.githubsearch.repository.GithubRepository
 import com.example.githubsearch.repository.impl.GithubRepositoryImpl
@@ -18,7 +19,11 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideGithubRepository(githubService: GithubService): GithubRepository {
-        return GithubRepositoryImpl(githubService = githubService, defaultDispatcher = Dispatchers.IO)
+    fun provideGithubRepository(githubService: GithubService, userDao: UserDao): GithubRepository {
+        return GithubRepositoryImpl(
+            githubService = githubService,
+            userDao = userDao,
+            defaultDispatcher = Dispatchers.IO
+        )
     }
 }

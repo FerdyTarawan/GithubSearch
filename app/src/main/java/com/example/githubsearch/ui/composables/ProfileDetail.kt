@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import com.example.githubsearch.model.User
+import com.example.githubsearch.model.entity.User
 import com.google.accompanist.placeholder.material.placeholder
 
 @Composable

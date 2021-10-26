@@ -19,6 +19,7 @@ import coil.compose.rememberImagePainter
 import com.example.githubsearch.model.Repo
 
 val DUMMY_REPO: Repo = Repo(
+    id=123,
     name = "Test",
     ownerAvatarUrl = "https://avatars.githubusercontent.com/u/37?v=4",
     updatedAt = "2 days ago",

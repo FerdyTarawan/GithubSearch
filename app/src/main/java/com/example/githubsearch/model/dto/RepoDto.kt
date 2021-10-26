@@ -82,7 +82,7 @@ data class RepoDto(
     @Json(name = "html_url")
     val htmlUrl: String,
     @Json(name = "id")
-    val id: Int,
+    val id: Long,
     @Json(name = "is_template")
     val isTemplate: Boolean,
     @Json(name = "issue_comment_url")
@@ -167,6 +167,7 @@ data class RepoDto(
 
 fun RepoDto.toDomain(): Repo {
     return Repo(
+        id = id,
         name = name,
         description = description,
         ownerAvatarUrl = owner.avatarUrl,

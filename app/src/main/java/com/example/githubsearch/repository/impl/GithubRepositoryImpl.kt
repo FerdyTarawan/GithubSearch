@@ -1,7 +1,8 @@
 package com.example.githubsearch.repository.impl
 
+import com.example.githubsearch.db.dao.UserDao
 import com.example.githubsearch.model.Repo
-import com.example.githubsearch.model.User
+import com.example.githubsearch.model.entity.User
 import com.example.githubsearch.model.dto.toDomain
 import com.example.githubsearch.network.GithubService
 import com.example.githubsearch.repository.GithubRepository
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.*
 @FlowPreview
 class GithubRepositoryImpl(
     private val githubService: GithubService,
+    private val userDao: UserDao,
     private val defaultDispatcher: CoroutineDispatcher
 ) : GithubRepository {
     override suspend fun searchUsers(
@@ -46,14 +48,19 @@ class GithubRepositoryImpl(
         onSuccess: (() -> Unit)?,
         onError: (() -> Unit)?
     ): Flow<User> = flow {
-        val response = githubService.getUser(username)
-
-        response.suspendOnSuccess {
-            val user = data.toDomain()
+        val user = userDao.getByUsername(username)
+        if (user == null) {
+            val response = githubService.getUser(username)
+            response.suspendOnSuccess {
+                val newUser = data.toDomain()
+                userDao.insert(newUser)
+                emit(newUser)
+                onSuccess?.invoke()
+            }.onError {
+                onError?.invoke()
+            }
+        } else {
             emit(user)
-            onSuccess?.invoke()
-        }.onError {
-            onError?.invoke()
         }
     }.onCompletion { onSuccess?.invoke() }.flowOn(defaultDispatcher)
 

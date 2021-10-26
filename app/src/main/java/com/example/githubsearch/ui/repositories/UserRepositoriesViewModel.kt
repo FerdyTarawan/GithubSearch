@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubsearch.model.Repo
-import com.example.githubsearch.model.User
+import com.example.githubsearch.model.entity.User
 import com.example.githubsearch.network.NetworkState
 import com.example.githubsearch.repository.GithubRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

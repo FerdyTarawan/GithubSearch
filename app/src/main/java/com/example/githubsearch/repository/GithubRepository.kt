@@ -1,7 +1,7 @@
 package com.example.githubsearch.repository
 
 import com.example.githubsearch.model.Repo
-import com.example.githubsearch.model.User
+import com.example.githubsearch.model.entity.User
 import kotlinx.coroutines.flow.Flow
 
 interface GithubRepository {
