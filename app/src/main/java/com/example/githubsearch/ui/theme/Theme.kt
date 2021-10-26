@@ -15,7 +15,10 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
     primary = Purple500,
     primaryVariant = Purple700,
-    secondary = Teal200
+    secondary = Gray200,
+    onSecondary = Charcoal,
+    onSurface = Charcoal,
+    onBackground = Charcoal
 
     /* Other default colors to override
     background = Color.White,
@@ -32,12 +35,7 @@ fun GithubSearchTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    val colors = if (darkTheme) {
-//        DarkColorPalette
-        LightColorPalette
-    } else {
-        LightColorPalette
-    }
+    val colors = LightColorPalette
 
     MaterialTheme(
         colors = colors,

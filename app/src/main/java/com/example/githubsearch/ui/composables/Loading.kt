@@ -13,8 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Loading() {
-    Surface(modifier = Modifier.size(50.dp), shape = CircleShape, elevation = 4.dp) {
+fun Loading(modifier: Modifier = Modifier) {
+    Surface(modifier = modifier.size(50.dp), shape = CircleShape, elevation = 4.dp) {
         Icon(
             Icons.Outlined.HourglassTop,
             "hourglass",

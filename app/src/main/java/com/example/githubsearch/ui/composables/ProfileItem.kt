@@ -9,12 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.githubsearch.model.User
+import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.placeholder.material.placeholder
 
-val DUMMY_USER: User = User(
+private val DUMMY_USER: User = User(
     login = "jamesgolick",
     name = "James Golick",
     avatarURL = "https://avatars.githubusercontent.com/u/37?v=4",
@@ -24,44 +28,73 @@ val DUMMY_USER: User = User(
     email = "wangshi@mihoyo.com",
     followers = "0",
     following = "0",
-    location = "New York"
+    location = "New York New York"
 )
 
 @Composable
-fun ProfileItem(user: User, onClick: () -> Unit) {
-    Row(
+fun ProfileItem(user: User, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Box(
         modifier = Modifier
             .clickable(onClick = onClick)
-            .fillMaxWidth()
-            .padding(5.dp)
+            .padding(10.dp)
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(
-                painter = rememberImagePainter(data = user.avatarURL),
-                contentDescription = "User avatar",
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape),
-            )
-        }
-
-        Spacer(Modifier.width(8.dp))
-
-        Column {
-            Row {
-                Text(text = user.name)
-                Spacer(Modifier.width(8.dp))
-                Text(text = "@${user.login}")
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(
+                    painter = rememberImagePainter(data = user.avatarURL),
+                    contentDescription = "User avatar",
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(CircleShape)
+                        .then(modifier),
+                )
             }
 
-            Row {
-                user.bio?.let { Text(text = it) }
-            }
+            Spacer(Modifier.width(8.dp))
 
-            Row {
-                user.location?.let { Text(text = it) }
-                Spacer(Modifier.width(16.dp))
-                user.email?.let { Text(text = it) }
+            Column {
+                FlowRow(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = user.name,
+                        modifier = Modifier.padding(end = 8.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                    )
+                    Text(
+                        text = "@${user.login}",
+                        fontSize = 10.sp,
+                    )
+                }
+
+                user.bio?.let {
+                    Spacer(Modifier.height(5.dp))
+                    Text(
+                        text = it,
+                        maxLines = 3,
+                        fontSize = 14.sp,
+                    )
+                    Spacer(Modifier.height(5.dp))
+                }
+
+                Spacer(Modifier.height(5.dp))
+
+                FlowRow {
+                    user.location?.let {
+                        Text(
+                            text = it,
+                            modifier = Modifier.padding(end = 8.dp),
+                            fontSize = 10.sp,
+                        )
+                    }
+
+                    user.email?.let {
+                        Text(text = it, fontSize = 10.sp)
+                    }
+                }
             }
         }
     }
@@ -70,5 +103,5 @@ fun ProfileItem(user: User, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun ProfileItemPreview() {
-    ProfileItem(user = DUMMY_USER) {}
+    ProfileItem(user = DUMMY_USER, modifier = Modifier.placeholder(visible = true)) {}
 }
