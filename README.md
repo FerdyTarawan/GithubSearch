@@ -27,3 +27,9 @@ baseUrl=GITHUB_API_BASE_URL
 - [Coil](https://github.com/coil-kt/coil)
 - [Accompanist](https://github.com/google/accompanist)
 - [Sandwich](https://github.com/skydoves/Sandwich)
+
+# MAD Score
+![summary](https://user-images.githubusercontent.com/17270207/153638312-34999201-10dc-47d7-b9fc-92efad168d21.png)
+![kotlin](https://user-images.githubusercontent.com/17270207/153638308-b90173da-df8d-4e37-8241-eec509839ef4.png)
+![jetpack](https://user-images.githubusercontent.com/17270207/153638296-b2046ae5-79cc-4845-a82d-4f72e769c62d.png)
+
